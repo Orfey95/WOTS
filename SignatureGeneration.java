@@ -31,4 +31,21 @@ public class SignatureGeneration {
         System.out.println("CheckSum = " + CBinary + "(2)");
         return blocksOfMessage;
     }
+
+    public String checkSumAddZeros(String CBinary, Integer w){
+        int temp = CBinary.length() % w; // Проверка на кратность s к w
+        String tempS = ""; //Строка для добавочных нулей
+        if(temp > 0){
+            for(int i = 0; i < w - temp; i++){
+                tempS += "0";
+            }
+            CBinary = tempS + CBinary; // Подстановка нулей в начало CheckSum
+        }
+        return CBinary;
+    }
+
+    public String [] checkSumSeparate(String Message, Integer s, Integer w){
+        String [] blocksOfCheckSum = new String[Message.length()/w];
+        return blocksOfCheckSum;
+    }
 }
