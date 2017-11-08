@@ -5,23 +5,28 @@ public class SignatureGeneration {
     private int C; // CheckSum
     private String CBinary; // CheckSum binary
 
-    public String [] messageSeparate(String Message, Integer s, Integer w){
-        int temp = s % w; // Ïðîâåðêà íà êðàòíîñòü s ê w
-        String tempS = ""; //Ñòðîêà äëÿ äîáàâî÷íûõ íóëåé
+    public String addZeros(String Message, Integer s, Integer w){
+        int temp = s % w; // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÐºÑ€Ð°Ñ‚Ð½Ð¾ÑÑ‚ÑŒ s Ðº w
+        String tempS = ""; //Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð´Ð»Ñ Ð´Ð¾Ð±Ð°Ð²Ð¾Ñ‡Ð½Ñ‹Ñ… Ð½ÑƒÐ»ÐµÐ¹
         if(temp > 0){
             for(int i = 0; i < w - temp; i++){
                 tempS += "0";
             }
-            Message = tempS + Message; // Ïîäñòàíîâêà íóëåé â íà÷àëî ñîîáùåíèÿ
+            Message = tempS + Message; // ÐŸÐ¾Ð´ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð½ÑƒÐ»ÐµÐ¹ Ð² Ð½Ð°Ñ‡Ð°Ð»Ð¾ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ
         }
+        return Message;
+    }
+
+    public String [] messageSeparate(String Message, Integer s, Integer w){
+        Message = addZeros(Message,  s,  w);
         String [] blocksOfMessage = new String[Message.length()/w];
-        int k = 0;  //ñ÷åò÷èê äëÿ èíäåêñîâ  ìàññèâà
-        for(int i = 0; i < Message.length(); i = i + w) { // ïðîõîä ïî ìàññèâó ÷åðåç êàæäûå w ñèìâîëà äëÿ íàõîæäåíèÿ íîâîé ïîäñòðîêè
-            String S1 = Message.substring(i, i + w); // íàõîæäåíèå ïîäñòðîêè ñ äëèíîé â w ñèìâîëà
-            blocksOfMessage[k++] = String.valueOf(Integer.parseInt(S1, 2)); // ïðèñâàèâàíèå ïîäñòðîêè ê ýëåìåíòó ìàññèâà
-            C += ((int) Math.pow(2, w)) - Integer.parseInt(S1, 2); // Ïîäñ÷åò CheckSum
+        int k = 0;  //ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº Ð´Ð»Ñ Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð²  Ð¼Ð°ÑÑÐ¸Ð²Ð°
+        for(int i = 0; i < Message.length(); i = i + w) { // Ð¿Ñ€Ð¾Ñ…Ð¾Ð´ Ð¿Ð¾ Ð¼Ð°ÑÑÐ¸Ð²Ñƒ Ñ‡ÐµÑ€ÐµÐ· ÐºÐ°Ð¶Ð´Ñ‹Ðµ w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð° Ð´Ð»Ñ Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ Ð½Ð¾Ð²Ð¾Ð¹ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸
+            String S1 = Message.substring(i, i + w); // Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ñ Ð´Ð»Ð¸Ð½Ð¾Ð¹ Ð² w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð°
+            blocksOfMessage[k++] = String.valueOf(Integer.parseInt(S1, 2)); // Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ðº ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñƒ Ð¼Ð°ÑÑÐ¸Ð²Ð°
+            C += ((int) Math.pow(2, w)) - Integer.parseInt(S1, 2); // ÐŸÐ¾Ð´ÑÑ‡ÐµÑ‚ CheckSum
         }
-        CBinary = Integer.toBinaryString(C); //Ïåðåâîä CheckSum â 2-þ ññ
+        CBinary = Integer.toBinaryString(C); //ÐŸÐµÑ€ÐµÐ²Ð¾Ð´ CheckSum Ð² 2-ÑŽ ÑÑ
         System.out.println("CheckSum = " + C + "(10)");
         System.out.println("CheckSum = " + CBinary + "(2)");
         return blocksOfMessage;
