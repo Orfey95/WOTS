@@ -17,10 +17,13 @@ public class KeyPairGeneration {
 
 
     public String generatePrivateKey() {
+        PRG prg = new PRG();
         calculateLengths();
-        String PrivateKey = "";
-        
-        return PrivateKey;
+        String X = "";
+        for(int i=0;i<t;i++){
+            X += prg.Random128();
+        }
+        return X;
     }
 
 }
