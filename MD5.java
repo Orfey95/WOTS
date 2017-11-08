@@ -17,9 +17,9 @@ public class MD5 {
         }
 
         BigInteger bigInt = new BigInteger(1, digest);
-        String md5Hex = bigInt.toString(16);
+        String md5Hex = bigInt.toString(2);
 
-        while( md5Hex.length() < 32 ){
+        while( md5Hex.length() < 128 ){
             md5Hex = "0" + md5Hex;
         }
 
