@@ -3,7 +3,7 @@ public class SignatureGeneration {
 
     Binarylog bl = new Binarylog();
     KeyPairGeneration kp = new KeyPairGeneration();
-    MD5 md5 = new MD5();
+    MD5Binary md5B = new MD5Binary();
     String CBinary = ""; // CheckSum binary
 
     public String messageAddZeros(String Message, Integer s, Integer w){
@@ -80,7 +80,7 @@ public class SignatureGeneration {
 
     public void generateSignature(String Message, Integer s, Integer w) {
         Integer[]b = messagePlusCheckSum(Message, s, w);
-        System.out.println("Full Array = " + Arrays.toString(messagePlusCheckSum(Message, s, w)));
+        //System.out.println("Full Array = " + Arrays.toString(messagePlusCheckSum(Message, s, w)));
         String Xi = "";
         //System.out.println("blen = " + b.length);
         for (int i = 0; i < KeyPairGeneration.t; i++) {
@@ -93,9 +93,8 @@ public class SignatureGeneration {
         String sigi = Xi;
         // System.out.println("bi" + bi);
         for (int i = 1; i <= bi; i++) {
-            sigi = md5.md5Custom(sigi);
+            sigi = md5B.md5Custom(sigi);
         }
         return sigi;
     }
 }
-
