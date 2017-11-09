@@ -12,11 +12,9 @@ public class Main {
         Binarylog bl = new Binarylog();
         MD5 md5 = new MD5();
         gen.generatePairKey(s, w);
-        System.out.println("t: " + gen.t);
+        //System.out.println("t: " + gen.t);
         System.out.println("X: " + gen.X + "\nY: " + gen.Y);
-        System.out.println("Full message = " + sg.messageAddZeros(Message, s, w));
-        System.out.println("Array of blocks of message = " + Arrays.toString(sg.messageSeparate(Message, s, w)));
-        System.out.println("Array of blocks of CheckSum = " + Arrays.toString(sg.checkSumSeparate(s, w)));
+        System.out.println("Full Array = " + Arrays.toString(sg.messagePlusCheckSum(Message, s, w)));
     }
 
 }
