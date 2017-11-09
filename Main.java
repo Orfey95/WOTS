@@ -1,11 +1,17 @@
 import java.security.NoSuchAlgorithmException;
 
 public class Main {
-
-    static String Message = "11010101100011100011010110000010101011111010100110010000010000001110001001111011100100101011000100111100100011110010001010000000";
-    static int s = Message.length();
-    static int w = 3;
     public static void main(String[] args) throws NoSuchAlgorithmException {
+        MD5Binary md5b = new MD5Binary();
+
+        String MessageOrigin = "Hello World!";
+
+        String Message = "";
+        int s = 0;
+        int w = 3;
+
+        Message = md5b.md5Custom(MessageOrigin);
+        s = Message.length();
         KeyPairGeneration kpg = new KeyPairGeneration();
         SignatureGeneration sg = new SignatureGeneration();
         Binarylog bl = new Binarylog();
