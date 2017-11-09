@@ -57,6 +57,22 @@ public class SignatureGeneration {
         return blocksOfCheckSum;
     }
 
+    public Integer [] messagePlusCheckSum(String Message, Integer s, Integer w){ // Соединение blocksOfMessage и blocksOfCheckSum
+        Integer [] messageArray = messageSeparate(Message, s, w);
+        Integer [] checkSumArray = checkSumSeparate(s, w);
+        Integer [] fullArray = new Integer[KeyPairGeneration.t];
+        int temp = (int)Math.ceil(messageAddZeros(Message, s, w).length() / w);
+        for(int i = 0; i < temp; i++){
+            fullArray[i] = messageArray[i];
+        }
+        int k = 0;  //счетчик для индексов массива
+        for (int j = temp; j < KeyPairGeneration.t; j++) {
+            fullArray[j] = checkSumArray[k];
+            k++;
+        }
+        return fullArray;
+    }
+    
     String SIGNATURE = "";
 
     public void generateSignature(String Message, Integer s, Integer w, Integer t, String X) {
