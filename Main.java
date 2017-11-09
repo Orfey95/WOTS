@@ -1,11 +1,17 @@
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         MD5Binary md5b = new MD5Binary();
 
-        String MessageOrigin = "Hello World!";
-        int w = 3;
+        Scanner inMessage = new Scanner(System.in);
+        System.out.printf("Input your message:\n");
+        String MessageOrigin = inMessage.nextLine();
+
+        Scanner inW = new Scanner(System.in);
+        System.out.printf("Input parametr w:\n");
+        int w = Integer.parseInt(inW.nextLine());
 
         String Message = "";
         int s = 0;
