@@ -7,14 +7,15 @@ public class Main {
     static int s = Message.length();
     static int w = 3;
     public static void main(String[] args) throws NoSuchAlgorithmException {
-        KeyPairGeneration gen = new KeyPairGeneration();
+        KeyPairGeneration kpg = new KeyPairGeneration();
         SignatureGeneration sg = new SignatureGeneration();
         Binarylog bl = new Binarylog();
         MD5 md5 = new MD5();
-        gen.generatePairKey(s, w);
+        kpg.generatePairKey(s, w);
         //System.out.println("t: " + gen.t);
-        System.out.println("X: " + gen.X + "\nY: " + gen.Y);
+        System.out.println("X: " + kpg.X + "\nY: " + kpg.Y);
         System.out.println("Full Array = " + Arrays.toString(sg.messagePlusCheckSum(Message, s, w)));
+        sg.generateSignature(Message, s, w);
+        System.out.println("Z: " + sg.SIGNATURE);
     }
-
 }
