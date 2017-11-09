@@ -5,11 +5,10 @@ public class Main {
         MD5Binary md5b = new MD5Binary();
 
         String MessageOrigin = "Hello World!";
+        int w = 3;
 
         String Message = "";
         int s = 0;
-        int w = 3;
-
         Message = md5b.md5Custom(MessageOrigin);
         s = Message.length();
         KeyPairGeneration kpg = new KeyPairGeneration();
