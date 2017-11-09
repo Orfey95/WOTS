@@ -18,8 +18,8 @@ public class SignatureGeneration {
 
     public Integer [] messageSeparate(String Message, Integer s, Integer w){
         Message = messageAddZeros(Message, s, w);
-        Integer [] blocksOfMessage = new Integer[Message.length()/w];
-        int k = 0;  //счетчик для индексов  массива
+        Integer [] blocksOfMessage = new Integer[(int)Math.ceil(Message.length() / w)];
+        int k = 0;  //счетчик для индексов массива
         for(int i = 0; i < Message.length(); i = i + w) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = Message.substring(i, i + w); // нахождение подстроки с длиной в w символа
             blocksOfMessage[k++] = Integer.parseInt(S1, 2); // присваивание подстроки к элементу массива
