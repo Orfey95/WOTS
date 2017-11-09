@@ -27,8 +27,8 @@ public class SignatureGeneration {
             CDecimal += ((int) Math.pow(2, w)) - Integer.parseInt(S1, 2); // Подсчет CheckSum
         }
         CBinary = Integer.toBinaryString(CDecimal); //Перевод CheckSum в 2-ю сс
-        System.out.println("CheckSum = " + CDecimal + "(10)");
-        System.out.println("CheckSum = " + CBinary + "(2)");
+        //System.out.println("CheckSum = " + CDecimal + "(10)");
+        //System.out.println("CheckSum = " + CBinary + "(2)");
         return blocksOfMessage;
     }
 
@@ -72,15 +72,15 @@ public class SignatureGeneration {
         }
         return fullArray;
     }
-    
+
     String SIGNATURE = "";
 
-    public void generateSignature(String Message, Integer s, Integer w, Integer t, String X) {
-        Integer[]b = messageSeparate(Message, s, w);
+    public void generateSignature(String Message, Integer s, Integer w) {
+        Integer[]b = messagePlusCheckSum(Message, s, w);
         String Xi = "";
         //System.out.println("blen = " + b.length);
-        for (int i = 0; i < t; i++) {
-            Xi = X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
+        for (int i = 0; i < KeyPairGeneration.t; i++) {
+            Xi = KeyPairGeneration.X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
             SIGNATURE += calculateSignatureI(Xi, b[i]);
         }
     }
