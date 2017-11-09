@@ -1,6 +1,8 @@
 public class SignatureGeneration {
 
     Binarylog bl = new Binarylog();
+    KeyPairGeneration kp = new KeyPairGeneration();
+    MD5 md5 = new MD5();
     private int CDecimal; // CheckSum
     public String CBinary; // CheckSum binary
 
@@ -15,7 +17,6 @@ public class SignatureGeneration {
         }
         return Message;
     }
-
     public Integer [] messageSeparate(String Message, Integer s, Integer w){
         Message = messageAddZeros(Message, s, w);
         Integer [] blocksOfMessage = new Integer[(int)Math.ceil(Message.length() / w)];
@@ -32,11 +33,11 @@ public class SignatureGeneration {
     }
 
     public String checkSumAddZeros(String CBinary, Integer s, Integer w){
-        int tCheckSum = (bl.binlog(s/w) + 1 + w)/w;
-        int temp = CBinary.length() % tCheckSum; // Проверка на кратность s к w
+        int tCheckSum = KeyPairGeneration.t2;
+        int temp = (tCheckSum * w) - CBinary.length(); // Проверка на кратность s к w
         String tempS = ""; //Строка для добавочных нулей
         if(temp > 0){
-            for(int i = 0; i < tCheckSum - temp; i++){
+            for(int i = 0; i < temp; i++){
                 tempS += "0";
             }
             CBinary = tempS + CBinary; // Подстановка нулей в начало CheckSum
@@ -44,28 +45,33 @@ public class SignatureGeneration {
         return CBinary;
     }
 
-    public String [] checkSumSeparate(Integer s, Integer w){
-        checkSumAddZeros(CBinary, s, w);
-        int tCheckSum = (bl.binlog(s/w) + 1 + w)/w;
-        String [] blocksOfCheckSum = new String[tCheckSum];
-
+    public Integer [] checkSumSeparate(Integer s, Integer w){
+        CBinary = checkSumAddZeros(CBinary, s, w);
+        int tCheckSum = KeyPairGeneration.t2;
+        Integer [] blocksOfCheckSum = new Integer[tCheckSum];
+        int k = 0;  //счетчик для индексов массива
+        for(int i = 0; i < CBinary.length(); i = i + w) { // проход по массиву через каждые w символа для нахождения новой подстроки
+            String S1 = CBinary.substring(i, i + w); // нахождение подстроки с длиной в w символа
+            blocksOfCheckSum[k++] = Integer.parseInt(S1, 2); // присваивание подстроки к элементу массива
+        }
         return blocksOfCheckSum;
     }
-    String sig = "";
 
-    public void GenerateSignature(String Message, Integer s, Integer w, int t, String X) {
+    String SIGNATURE = "";
+
+    public void generateSignature(String Message, Integer s, Integer w, Integer t, String X) {
         Integer[]b = messageSeparate(Message, s, w);
         String Xi = "";
         //System.out.println("blen = " + b.length);
         for (int i = 0; i < t; i++) {
-            Xi = X.substring(i*s, i*s+s); // нахождение подстроки с длиной в s символ
-            sig += Calculatesigi(Xi,b[i]);
+            Xi = X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
+            SIGNATURE += calculateSignatureI(Xi, b[i]);
         }
     }
 
-    private String Calculatesigi(String Xi, int bi) {
+    private String calculateSignatureI(String Xi, Integer bi) {
         String sigi = Xi;
-       // System.out.println("bi" + bi);
+        // System.out.println("bi" + bi);
         for (int i = 1; i <= bi; i++) {
             sigi = md5.md5Custom(sigi);
         }
