@@ -11,6 +11,7 @@ public class Main {
         SignatureGeneration sg = new SignatureGeneration();
         Binarylog bl = new Binarylog();
         MD5 md5 = new MD5();
+        SignatureVerification sv = new SignatureVerification();
         kpg.generatePairKey(s, w);
         //System.out.println("t: " + gen.t);
         System.out.println("X: " + kpg.X + "\nY: " + kpg.Y);
