@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class SignatureGeneration {
 
     Binarylog bl = new Binarylog();
@@ -18,13 +16,13 @@ public class SignatureGeneration {
         return Message;
     }
 
-    public String [] messageSeparate(String Message, Integer s, Integer w){
+    public Integer [] messageSeparate(String Message, Integer s, Integer w){
         Message = messageAddZeros(Message, s, w);
-        String [] blocksOfMessage = new String[Message.length()/w];
+        Integer [] blocksOfMessage = new Integer[Message.length()/w];
         int k = 0;  //счетчик для индексов  массива
         for(int i = 0; i < Message.length(); i = i + w) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = Message.substring(i, i + w); // нахождение подстроки с длиной в w символа
-            blocksOfMessage[k++] = String.valueOf(Integer.parseInt(S1, 2)); // присваивание подстроки к элементу массива
+            blocksOfMessage[k++] = Integer.parseInt(S1, 2); // присваивание подстроки к элементу массива
             CDecimal += ((int) Math.pow(2, w)) - Integer.parseInt(S1, 2); // Подсчет CheckSum
         }
         CBinary = Integer.toBinaryString(CDecimal); //Перевод CheckSum в 2-ю сс
@@ -48,8 +46,8 @@ public class SignatureGeneration {
 
     public String [] checkSumSeparate(Integer s, Integer w){
         checkSumAddZeros(CBinary, s, w);
-        int t = (bl.binlog(s/w) + 1 + w)/w;
-        String [] blocksOfCheckSum = new String[s / w];
+        int tCheckSum = (bl.binlog(s/w) + 1 + w)/w;
+        String [] blocksOfCheckSum = new String[tCheckSum];
 
         return blocksOfCheckSum;
     }
