@@ -51,4 +51,24 @@ public class SignatureGeneration {
 
         return blocksOfCheckSum;
     }
+    String sig = "";
+
+    public void GenerateSignature(String Message, Integer s, Integer w, int t, String X) {
+        Integer[]b = messageSeparate(Message, s, w);
+        String Xi = "";
+        //System.out.println("blen = " + b.length);
+        for (int i = 0; i < t; i++) {
+            Xi = X.substring(i*s, i*s+s); // нахождение подстроки с длиной в s символ
+            sig += Calculatesigi(Xi,b[i]);
+        }
+    }
+
+    private String Calculatesigi(String Xi, int bi) {
+        String sigi = Xi;
+       // System.out.println("bi" + bi);
+        for (int i = 1; i <= bi; i++) {
+            sigi = md5.md5Custom(sigi);
+        }
+        return sigi;
+    }
 }
