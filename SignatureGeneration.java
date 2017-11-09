@@ -2,6 +2,7 @@ import java.util.Arrays;
 
 public class SignatureGeneration {
 
+    Binarylog bl = new Binarylog();
     private int CDecimal; // CheckSum
     public String CBinary; // CheckSum binary
 
@@ -32,11 +33,12 @@ public class SignatureGeneration {
         return blocksOfMessage;
     }
 
-    public String checkSumAddZeros(String CBinary, Integer w){
-        int temp = CBinary.length() % w; // Проверка на кратность s к w
+    public String checkSumAddZeros(String CBinary, Integer s, Integer w){
+        int tCheckSum = (bl.binlog(s/w) + 1 + w)/w;
+        int temp = CBinary.length() % tCheckSum; // Проверка на кратность s к w
         String tempS = ""; //Строка для добавочных нулей
         if(temp > 0){
-            for(int i = 0; i < w - temp; i++){
+            for(int i = 0; i < tCheckSum - temp; i++){
                 tempS += "0";
             }
             CBinary = tempS + CBinary; // Подстановка нулей в начало CheckSum
@@ -45,7 +47,8 @@ public class SignatureGeneration {
     }
 
     public String [] checkSumSeparate(Integer s, Integer w){
-        checkSumAddZeros(CBinary, w);
+        checkSumAddZeros(CBinary, s, w);
+        int t = (bl.binlog(s/w) + 1 + w)/w;
         String [] blocksOfCheckSum = new String[s / w];
 
         return blocksOfCheckSum;
