@@ -12,7 +12,7 @@ public class SignatureVerification {
             SIGNATUREi = SIGNATURE.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
             sig += calculateSignatureI(SIGNATUREi,b[i],w);
         }
-        if(KeyPairGeneration.Y.compareTo(sig) == 0)
+        if(md5.md5Custom(KeyPairGeneration.Y).compareTo(md5.md5Custom(sig)) == 0)
             return true;
         else
             return false;
