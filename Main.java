@@ -1,5 +1,4 @@
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class Main {
 
@@ -10,16 +9,25 @@ public class Main {
         KeyPairGeneration kpg = new KeyPairGeneration();
         SignatureGeneration sg = new SignatureGeneration();
         Binarylog bl = new Binarylog();
-        MD5 md5 = new MD5();
         SignatureVerification sv = new SignatureVerification();
         kpg.generatePairKey(s, w);
-        //System.out.println("t: " + gen.t);
-        System.out.println("X: " + kpg.X + "\nY: " + kpg.Y);
-        System.out.println("Full Array = " + Arrays.toString(sg.messagePlusCheckSum(Message, s, w)));
+        System.out.println("X - Private key; Y - Public key; Y` - Validation string.\n");
+        System.out.println("X : " + kpg.X + "\nY : " + kpg.Y);
         sg.generateSignature(Message, s, w);
-        System.out.println("Sig: " + sg.SIGNATURE);
-        if(sv.verifySignature(sg.SIGNATURE,Message,s,w))
-            System.out.println("Signature is equal");
-        System.out.println("newSig: " + sv.sig);
+        System.out.println("Signature: " + sg.SIGNATURE);
+
+        boolean equalSignature = false;
+        if(sv.verifySignature(sg.SIGNATURE, Message, s,w)) {
+            equalSignature = true;
+        }
+
+        System.out.println("Y`: " + sv.sig);
+
+        if(equalSignature == true){
+            System.out.println("\nThe signature is valid!");
+        }
+        else {
+            System.out.println("The signature is NOT valid!");
+        }
     }
 }
