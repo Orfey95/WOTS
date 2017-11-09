@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class SignatureGeneration {
 
     private int CDecimal; // CheckSum
-    private String CBinary; // CheckSum binary
+    public String CBinary; // CheckSum binary
 
     public String messageAddZeros(String Message, Integer s, Integer w){
         int temp = s % w; // Проверка на кратность s к w
@@ -44,8 +44,10 @@ public class SignatureGeneration {
         return CBinary;
     }
 
-    public String [] checkSumSeparate(String Message, Integer s, Integer w){
-        String [] blocksOfCheckSum = new String[Message.length()/w];
+    public String [] checkSumSeparate(Integer s, Integer w){
+        checkSumAddZeros(CBinary, w);
+        String [] blocksOfCheckSum = new String[s / w];
+
         return blocksOfCheckSum;
     }
 }
