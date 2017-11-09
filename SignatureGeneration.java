@@ -18,7 +18,6 @@ public class SignatureGeneration {
         return Message;
     }
     public Integer [] messageSeparate(String Message, Integer s, Integer w){
-        Message = "";
         Message = messageAddZeros(Message, s, w);
         Integer [] blocksOfMessage = new Integer[(int)Math.ceil(Message.length() / w)];
         int k = 0;  //счетчик для индексов массива
