@@ -5,8 +5,8 @@ public class KeyPairGeneration {
     static int t;
     static int t1;
     static int t2;
-    String X = "";
-    String Y = "";
+    static String X = "";
+    static String Y = "";
 
     public void calculateLengths(Integer s, Integer w){
         t1 = (int)Math.ceil(new Double(s) / new Double(w));
