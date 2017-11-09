@@ -17,8 +17,9 @@ public class Main {
         System.out.println("X: " + kpg.X + "\nY: " + kpg.Y);
         System.out.println("Full Array = " + Arrays.toString(sg.messagePlusCheckSum(Message, s, w)));
         sg.generateSignature(Message, s, w);
-        System.out.println("Z: " + sg.SIGNATURE);
-        sv.verifySignature(sg.SIGNATURE,Message,s,w);
-        System.out.println("P: " + sv.sig);
+        System.out.println("Sig: " + sg.SIGNATURE);
+        if(sv.verifySignature(sg.SIGNATURE,Message,s,w))
+            System.out.println("Signature is equal");
+        System.out.println("newSig: " + sv.sig);
     }
 }
