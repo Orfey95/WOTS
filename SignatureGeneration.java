@@ -1,10 +1,10 @@
+import java.util.Arrays;
 public class SignatureGeneration {
 
     Binarylog bl = new Binarylog();
     KeyPairGeneration kp = new KeyPairGeneration();
     MD5 md5 = new MD5();
-    private int CDecimal; // CheckSum
-    public String CBinary; // CheckSum binary
+    String CBinary = ""; // CheckSum binary
 
     public String messageAddZeros(String Message, Integer s, Integer w){
         int temp = s % w; // Проверка на кратность s к w
@@ -17,7 +17,10 @@ public class SignatureGeneration {
         }
         return Message;
     }
+
     public Integer [] messageSeparate(String Message, Integer s, Integer w){
+        int CDecimal = 0;
+
         Message = messageAddZeros(Message, s, w);
         Integer [] blocksOfMessage = new Integer[(int)Math.ceil(Message.length() / w)];
         int k = 0;  //счетчик для индексов массива
@@ -77,6 +80,7 @@ public class SignatureGeneration {
 
     public void generateSignature(String Message, Integer s, Integer w) {
         Integer[]b = messagePlusCheckSum(Message, s, w);
+        System.out.println("Full Array = " + Arrays.toString(messagePlusCheckSum(Message, s, w)));
         String Xi = "";
         //System.out.println("blen = " + b.length);
         for (int i = 0; i < KeyPairGeneration.t; i++) {
@@ -94,3 +98,4 @@ public class SignatureGeneration {
         return sigi;
     }
 }
+
