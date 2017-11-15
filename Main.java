@@ -43,11 +43,11 @@ public class Main {
         else {
             System.out.println("The signature is NOT valid!");
         }*/
-        int s = 256;
+        int s = 128;
         int w = 3;
         P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
         p_kpg.calculateLengths(s, w);
-        System.out.printf(String.valueOf(P_KeyPairGeneration.l));
+        System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
         p_kpg.calculateSK(s,w);
         p_kpg.calculatePK(s,w);
         System.out.println("X: " + P_KeyPairGeneration.X);
