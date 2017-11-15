@@ -9,11 +9,15 @@ public class P_SignatureVerification {
 
     public boolean verifySignature(String SIGNATURE, String Message, Integer s, Integer w) {
         Integer[]b = sigGen.messagePlusCheckSum(Message, s, w);
-        //System.out.println("Full Array = " + Arrays.toString(sigGen.messagePlusCheckSum(Message, s, w)));
+        //System.out.println(Arrays.asList(b));
         String SIGNATUREi = "";
+        String ri = "";
+        int I = 0;
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
-            SIGNATUREi = SIGNATURE.substring(i * s, i * s + s); // ���������� ��������� � ������ � s ������
-            sig += calculateSignatureI(SIGNATUREi,b[i],w);
+            I = (b[i]+1) % (w - 1);
+            SIGNATUREi = SIGNATURE.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
+            ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
+            sig += xor(calculateSignatureI(SIGNATUREi,b[i],w), ri, s);
         }
         sig = md5H.md5Custom(sig);
         if(P_KeyPairGeneration.Y.compareTo(sig) == 0)
@@ -22,9 +26,18 @@ public class P_SignatureVerification {
             return false;
     }
     private String calculateSignatureI(String sigi, Integer bi, Integer w) {
-        for (int i = 1; i <= Math.pow(2, w) - 1 - bi; i++) {
+        for (int i = 1; i <= w - 1 - bi; i++) {
             sigi = md5B.md5Custom(sigi);
         }
         return sigi;
     }
+
+    private String xor(String sigi, String ri, Integer s) {
+        String newsigi = "";
+        for (int i = 0; i < s; i++) {
+            newsigi += sigi.charAt(i) ^ ri.charAt(i);
+        }
+        return newsigi;
+    }
+
 }
