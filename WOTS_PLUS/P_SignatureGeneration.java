@@ -33,8 +33,8 @@ public class P_SignatureGeneration {
             CDecimal += (w - 1 - (Integer.parseInt(S1, 2) % w)); // Подсчет CheckSum
         }
         CBinary = Integer.toBinaryString(CDecimal); //Перевод CheckSum в 2-ю сс
-        System.out.println("CheckSum = " + CDecimal + "(10)");
-        System.out.println("CheckSum = " + CBinary + "(2)");
+        //System.out.println("CheckSum = " + CDecimal + "(10)");
+        //System.out.println("CheckSum = " + CBinary + "(2)");
         return blocksOfMessage;
     }
 
