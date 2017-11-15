@@ -45,12 +45,20 @@ public class Main {
         }*/
         int s = 128;
         int w = 3;
+        MD5Binary md5b = new MD5Binary();
+        String Message = md5b.md5Custom("aaa");
         P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
+        P_SignatureGeneration p_sg = new P_SignatureGeneration();
+        P_SignatureVerification p_sv = new P_SignatureVerification();
         p_kpg.calculateSK(s,w);
-        p_kpg.calculatePK(s, w);
+        p_kpg.calculatePK(s,w);
+        p_sg.generateSignature(Message, s, w);
+        p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w);
         System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
         System.out.println("X: " + P_KeyPairGeneration.X);
         System.out.println("Y: " + P_KeyPairGeneration.Y);
         System.out.println("r: " + P_KeyPairGeneration.r);
+        System.out.println("SIGNATURE: " + p_sg.SIGNATURE);
+        System.out.println("sig: " + p_sv.sig);
     }
 }
