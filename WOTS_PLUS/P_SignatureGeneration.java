@@ -6,16 +6,17 @@ public class P_SignatureGeneration {
     Binarylog bl = new Binarylog();
     P_KeyPairGeneration p_kp = new P_KeyPairGeneration();
     MD5Binary md5B = new MD5Binary();
-    String CBinary = ""; // CheckSum binary
+    public String CBinary = ""; // CheckSum binary
 
     public String messageAddZeros(String Message, Integer s, Integer w){
-        int temp = s % w; // Ïðîâåðêà íà êðàòíîñòü s ê w
-        String tempS = ""; //Ñòðîêà äëÿ äîáàâî÷íûõ íóëåé
+        int temp = p_kp.l1 * (int)Math.ceil(bl.binlog((double) w)); // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÐºÑ€Ð°Ñ‚Ð½Ð¾ÑÑ‚ÑŒ s Ðº w
+        temp = temp - s;
+        String tempS = ""; //Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð´Ð»Ñ Ð´Ð¾Ð±Ð°Ð²Ð¾Ñ‡Ð½Ñ‹Ñ… Ð½ÑƒÐ»ÐµÐ¹
         if(temp > 0){
-            for(int i = 0; i < w - temp; i++){
+            for(int i = 0; i < temp; i++){
                 tempS += "0";
             }
-            Message = tempS + Message; // Ïîäñòàíîâêà íóëåé â íà÷àëî ñîîáùåíèÿ
+            Message = tempS + Message; // ÐŸÐ¾Ð´ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð½ÑƒÐ»ÐµÐ¹ Ð² Ð½Ð°Ñ‡Ð°Ð»Ð¾ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ
         }
         return Message;
     }
@@ -24,28 +25,28 @@ public class P_SignatureGeneration {
         int CDecimal = 0;
 
         Message = messageAddZeros(Message, s, w);
-        Integer [] blocksOfMessage = new Integer[(int)Math.ceil(Message.length() / w)];
-        int k = 0;  //ñ÷åò÷èê äëÿ èíäåêñîâ ìàññèâà
-        for(int i = 0; i < Message.length(); i = i + w) { // ïðîõîä ïî ìàññèâó ÷åðåç êàæäûå w ñèìâîëà äëÿ íàõîæäåíèÿ íîâîé ïîäñòðîêè
-            String S1 = Message.substring(i, i + w); // íàõîæäåíèå ïîäñòðîêè ñ äëèíîé â w ñèìâîëà
-            blocksOfMessage[k++] = Integer.parseInt(S1, 2); // ïðèñâàèâàíèå ïîäñòðîêè ê ýëåìåíòó ìàññèâà
-            CDecimal += ((int) Math.pow(2, w)) - Integer.parseInt(S1, 2); // Ïîäñ÷åò CheckSum
+        Integer [] blocksOfMessage = new Integer[p_kp.l1];
+        int k = 0;  //ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº Ð´Ð»Ñ Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð² Ð¼Ð°ÑÑÐ¸Ð²Ð°
+        for(int i = 0; i < Message.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // Ð¿Ñ€Ð¾Ñ…Ð¾Ð´ Ð¿Ð¾ Ð¼Ð°ÑÑÐ¸Ð²Ñƒ Ñ‡ÐµÑ€ÐµÐ· ÐºÐ°Ð¶Ð´Ñ‹Ðµ w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð° Ð´Ð»Ñ Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ Ð½Ð¾Ð²Ð¾Ð¹ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸
+            String S1 = Message.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ñ Ð´Ð»Ð¸Ð½Ð¾Ð¹ Ð² w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð°
+            blocksOfMessage[k++] = Integer.parseInt(S1, 2); // Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ðº ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñƒ Ð¼Ð°ÑÑÐ¸Ð²Ð°
+            CDecimal += (w - 1 - (Integer.parseInt(S1, 2) % w)); // ÐŸÐ¾Ð´ÑÑ‡ÐµÑ‚ CheckSum
         }
-        CBinary = Integer.toBinaryString(CDecimal); //Ïåðåâîä CheckSum â 2-þ ññ
-        //System.out.println("CheckSum = " + CDecimal + "(10)");
-        //System.out.println("CheckSum = " + CBinary + "(2)");
+        CBinary = Integer.toBinaryString(CDecimal); //ÐŸÐµÑ€ÐµÐ²Ð¾Ð´ CheckSum Ð² 2-ÑŽ ÑÑ
+        System.out.println("CheckSum = " + CDecimal + "(10)");
+        System.out.println("CheckSum = " + CBinary + "(2)");
         return blocksOfMessage;
     }
 
     public String checkSumAddZeros(String CBinary, Integer s, Integer w){
         int tCheckSum = P_KeyPairGeneration.l2;
-        int temp = (tCheckSum * w) - CBinary.length(); // Ïðîâåðêà íà êðàòíîñòü s ê w
-        String tempS = ""; //Ñòðîêà äëÿ äîáàâî÷íûõ íóëåé
+        int temp = (tCheckSum * (int)Math.ceil(bl.binlog((double) w))) - CBinary.length(); // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÐºÑ€Ð°Ñ‚Ð½Ð¾ÑÑ‚ÑŒ s Ðº w
+        String tempS = ""; //Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð´Ð»Ñ Ð´Ð¾Ð±Ð°Ð²Ð¾Ñ‡Ð½Ñ‹Ñ… Ð½ÑƒÐ»ÐµÐ¹
         if(temp > 0){
             for(int i = 0; i < temp; i++){
                 tempS += "0";
             }
-            CBinary = tempS + CBinary; // Ïîäñòàíîâêà íóëåé â íà÷àëî CheckSum
+            CBinary = tempS + CBinary; // ÐŸÐ¾Ð´ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð½ÑƒÐ»ÐµÐ¹ Ð² Ð½Ð°Ñ‡Ð°Ð»Ð¾ CheckSum
         }
         return CBinary;
     }
@@ -54,24 +55,23 @@ public class P_SignatureGeneration {
         CBinary = checkSumAddZeros(CBinary, s, w);
         int tCheckSum = P_KeyPairGeneration.l2;
         Integer [] blocksOfCheckSum = new Integer[tCheckSum];
-        int k = 0;  //ñ÷åò÷èê äëÿ èíäåêñîâ ìàññèâà
-        for(int i = 0; i < CBinary.length(); i = i + w) { // ïðîõîä ïî ìàññèâó ÷åðåç êàæäûå w ñèìâîëà äëÿ íàõîæäåíèÿ íîâîé ïîäñòðîêè
-            String S1 = CBinary.substring(i, i + w); // íàõîæäåíèå ïîäñòðîêè ñ äëèíîé â w ñèìâîëà
-            blocksOfCheckSum[k++] = Integer.parseInt(S1, 2); // ïðèñâàèâàíèå ïîäñòðîêè ê ýëåìåíòó ìàññèâà
+        int k = 0;  //ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº Ð´Ð»Ñ Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð² Ð¼Ð°ÑÑÐ¸Ð²Ð°
+        for(int i = 0; i < CBinary.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // Ð¿Ñ€Ð¾Ñ…Ð¾Ð´ Ð¿Ð¾ Ð¼Ð°ÑÑÐ¸Ð²Ñƒ Ñ‡ÐµÑ€ÐµÐ· ÐºÐ°Ð¶Ð´Ñ‹Ðµ w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð° Ð´Ð»Ñ Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ Ð½Ð¾Ð²Ð¾Ð¹ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸
+            String S1 = CBinary.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ñ Ð´Ð»Ð¸Ð½Ð¾Ð¹ Ð² w ÑÐ¸Ð¼Ð²Ð¾Ð»Ð°
+            blocksOfCheckSum[k++] = Integer.parseInt(S1, 2); // Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ðº ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñƒ Ð¼Ð°ÑÑÐ¸Ð²Ð°
         }
         return blocksOfCheckSum;
     }
 
-    public Integer [] messagePlusCheckSum(String Message, Integer s, Integer w){ // Ñîåäèíåíèå blocksOfMessage è blocksOfCheckSum
+    public Integer [] messagePlusCheckSum(String Message, Integer s, Integer w){ // Ð¡Ð¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ blocksOfMessage Ð¸ blocksOfCheckSum
         Integer [] messageArray = messageSeparate(Message, s, w);
         Integer [] checkSumArray = checkSumSeparate(s, w);
         Integer [] fullArray = new Integer[P_KeyPairGeneration.l];
-        int temp = (int)Math.ceil(messageAddZeros(Message, s, w).length() / w);
-        for(int i = 0; i < temp; i++){
+        for(int i = 0; i < p_kp.l1; i++){
             fullArray[i] = messageArray[i];
         }
-        int k = 0;  //ñ÷åò÷èê äëÿ èíäåêñîâ ìàññèâà
-        for (int j = temp; j < P_KeyPairGeneration.l; j++) {
+        int k = 0;  //ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº Ð´Ð»Ñ Ð¸Ð½Ð´ÐµÐºÑÐ¾Ð² Ð¼Ð°ÑÑÐ¸Ð²Ð°
+        for (int j = p_kp.l1; j < p_kp.l; j++) {
             fullArray[j] = checkSumArray[k];
             k++;
         }
@@ -86,7 +86,7 @@ public class P_SignatureGeneration {
         String Xi = "";
         //System.out.println("blen = " + b.length);
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
-            Xi = P_KeyPairGeneration.X.substring(i * s, i * s + s); // íàõîæäåíèå ïîäñòðîêè ñ äëèíîé â s ñèìâîë
+            Xi = P_KeyPairGeneration.X.substring(i * s, i * s + s); // Ð½Ð°Ñ…Ð¾Ð¶Ð´ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð´ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ñ Ð´Ð»Ð¸Ð½Ð¾Ð¹ Ð² s ÑÐ¸Ð¼Ð²Ð¾Ð»
             SIGNATURE += calculateSignatureI(Xi, b[i]);
         }
     }
