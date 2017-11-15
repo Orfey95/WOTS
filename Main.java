@@ -48,5 +48,10 @@ public class Main {
         P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
         p_kpg.calculateLengths(s, w);
         System.out.printf(String.valueOf(P_KeyPairGeneration.l));
+        pkg.calculateSK(s,w);
+        pkg.calculatePK(s,w);
+        System.out.println("X: " + P_KeyPairGeneration.X);
+        System.out.println("Y: " + P_KeyPairGeneration.Y);
+        System.out.println("r: " + P_KeyPairGeneration.r);
     }
 }
