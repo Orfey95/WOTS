@@ -12,9 +12,9 @@ public class P_KeyPairGeneration {
     public static String Y = "";
     public static String r = "";
 
-    private void calculateLengths(Integer s, Integer w){
-        l1 = (int)Math.ceil(new Double(s) / new Double(w));
-        l2 = (int)Math.ceil((double)((int)Math.ceil(bl.binlog((double) l1)) + 1 + w)/(double)w);
+    public void calculateLengths(Integer s, Integer w){
+        l1 = (int)Math.ceil(new Double(s) / (int)Math.ceil(bl.binlog((double) w)));
+        l2 = (int)Math.ceil((new Double((int)Math.ceil(bl.binlog((double) (l1 * (w - 1))))) / new Double((int)Math.ceil(bl.binlog((double) w)))) + 1);
         l = l1 + l2;
     }
 
