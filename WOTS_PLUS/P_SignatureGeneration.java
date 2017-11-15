@@ -80,23 +80,32 @@ public class P_SignatureGeneration {
 
     public String SIGNATURE = "";
 
-    public void generateSignature(String Message, Integer s, Integer w) {
+     public void generateSignature(String Message, Integer s, Integer w) {
         Integer[]b = messagePlusCheckSum(Message, s, w);
-        //System.out.println("Full Array = " + Arrays.toString(messagePlusCheckSum(Message, s, w)));
         String Xi = "";
-        //System.out.println("blen = " + b.length);
+        String ri = "";
+        int I = 0;
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
+            I = i % (w - 1);
             Xi = P_KeyPairGeneration.X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
-            SIGNATURE += calculateSignatureI(Xi, b[i]);
+            ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
+            SIGNATURE += xor(calculateSignatureI(Xi, b[i]), ri, s);
         }
     }
 
     private String calculateSignatureI(String Xi, Integer bi) {
         String sigi = Xi;
-        // System.out.println("bi" + bi);
         for (int i = 1; i <= bi; i++) {
             sigi = md5B.md5Custom(sigi);
         }
         return sigi;
+    }
+
+    private String xor(String Xi, String ri, Integer s) {
+        String newXi = "";
+        for (int i = 0; i < s; i++) {
+            newXi += Xi.charAt(i) ^ ri.charAt(i);
+        }
+        return newXi;
     }
 }
