@@ -112,6 +112,7 @@ public class Main {
         P_KeyPairGeneration.l2 = 0;
         P_KeyPairGeneration.X = "";
         P_KeyPairGeneration.Y = "";
+        P_KeyPairGeneration.r = "";
         p_sg.CBinary = "";
         p_sg.SIGNATURE = "";
         p_sv.sig = "";
