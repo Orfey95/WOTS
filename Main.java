@@ -62,25 +62,22 @@ public class Main {
             }
         }
         if(chooseAlgoritm == 2) {
-        /*String Message = "00110000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001010";
-        int s = Message.length();
-        int w = 3;*/
-
-            P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
-            P_SignatureGeneration p_sg = new P_SignatureGeneration();
-
-        /*p_kpg.calculateSK(s,w);
-        p_kpg.calculatePK(s, w);
-        System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
+        P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
+        P_SignatureGeneration p_sg = new P_SignatureGeneration();
+        P_SignatureVerification p_sv = new P_SignatureVerification();
+        p_kpg.calculateSK(s,w);
+        System.out.println("r: " + P_KeyPairGeneration.r.length());
+        p_kpg.calculatePK(s,w);
         System.out.println("X: " + P_KeyPairGeneration.X);
         System.out.println("Y: " + P_KeyPairGeneration.Y);
-        System.out.println("r: " + P_KeyPairGeneration.r);*/
-            p_kpg.calculateLengths(s, w);
-            //System.out.println(p_sg.messageAddZeros(Message, s, w));
-            //System.out.println(Arrays.asList(p_sg.messageSeparate(Message, s, w)));
-            //System.out.println(p_sg.checkSumAddZeros(p_sg.CBinary, s, w));
-            //System.out.println(Arrays.asList(p_sg.checkSumSeparate(s, w)));
-            System.out.println(Arrays.asList(p_sg.messagePlusCheckSum(Message, s, w)));
+        p_sg.generateSignature(Message, s, w);
+        p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w);
+        //System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
+
+
+        System.out.println("SIGNATURE: " + p_sg.SIGNATURE);
+        System.out.println("sig: " + p_sv.sig);
+        
         }
         Scanner inExit = new Scanner(System.in);
         System.out.printf("Exit or not? (0 - Exit, 1 - Start):\n");
