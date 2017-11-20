@@ -63,21 +63,27 @@ public class Main {
         }
         if(chooseAlgoritm == 2) {
         P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
-        P_SignatureGeneration p_sg = new P_SignatureGeneration();
-        P_SignatureVerification p_sv = new P_SignatureVerification();
-        p_kpg.calculateSK(s,w);
-        System.out.println("r: " + P_KeyPairGeneration.r.length());
-        p_kpg.calculatePK(s,w);
-        System.out.println("X: " + P_KeyPairGeneration.X);
-        System.out.println("Y: " + P_KeyPairGeneration.Y);
-        p_sg.generateSignature(Message, s, w);
-        p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w);
-        //System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
-
-
-        System.out.println("SIGNATURE: " + p_sg.SIGNATURE);
-        System.out.println("sig: " + p_sv.sig);
-        
+            P_SignatureGeneration p_sg = new P_SignatureGeneration();
+            P_SignatureVerification p_sv = new P_SignatureVerification();
+            long start = System.currentTimeMillis(); // STAR TIMER
+            p_kpg.calculateSK(s,w);
+            System.out.println("r: " + P_KeyPairGeneration.r.length());
+            p_kpg.calculatePK(s,w);
+            System.out.println("X: " + P_KeyPairGeneration.X);
+            System.out.println("Y: " + P_KeyPairGeneration.Y);
+            p_sg.generateSignature(Message, s, w);
+            p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w);
+            //System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
+            long finish = System.currentTimeMillis(); // FINISH TIMER
+            long timeConsumedMillis = finish - start;
+            System.out.println("SIGNATURE: " + p_sg.SIGNATURE);
+            System.out.println("sig: " + p_sv.sig);
+            //Statistic
+            System.out.println("\n" + "Statictic:");
+            System.out.println("Length of Private key: " + (P_KeyPairGeneration.X.length() + P_KeyPairGeneration.r.length()) + " bits");
+            System.out.println("Length of Signature: " + p_sg.SIGNATURE.length() + " bits");
+            System.out.println("Time: " + timeConsumedMillis + "ms");
+            //Statistic
         }
         Scanner inExit = new Scanner(System.in);
         System.out.printf("Exit or not? (0 - Exit, 1 - Start):\n");
