@@ -1,5 +1,6 @@
 package WOTS_PLUS;
 import Config.*;
+import java.util.Arrays;
 
 public class P_SignatureGeneration {
 
@@ -29,7 +30,7 @@ public class P_SignatureGeneration {
         int k = 0;  //счетчик для индексов массива
         for(int i = 0; i < Message.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = Message.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // нахождение подстроки с длиной в w символа
-            blocksOfMessage[k++] = Integer.parseInt(S1, 2); // присваивание подстроки к элементу массива
+            blocksOfMessage[k++] = (Integer.parseInt(S1, 2) % w); // присваивание подстроки к элементу массива
             CDecimal += (w - 1 - (Integer.parseInt(S1, 2) % w)); // Подсчет CheckSum
         }
         CBinary = Integer.toBinaryString(CDecimal); //Перевод CheckSum в 2-ю сс
@@ -58,7 +59,7 @@ public class P_SignatureGeneration {
         int k = 0;  //счетчик для индексов массива
         for(int i = 0; i < CBinary.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = CBinary.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // нахождение подстроки с длиной в w символа
-            blocksOfCheckSum[k++] = Integer.parseInt(S1, 2); // присваивание подстроки к элементу массива
+            blocksOfCheckSum[k++] = (Integer.parseInt(S1, 2) % w); // присваивание подстроки к элементу массива
         }
         return blocksOfCheckSum;
     }
@@ -75,28 +76,28 @@ public class P_SignatureGeneration {
             fullArray[j] = checkSumArray[k];
             k++;
         }
+        //System.out.println(Arrays.asList(fullArray));
         return fullArray;
     }
 
     public String SIGNATURE = "";
 
-     public void generateSignature(String Message, Integer s, Integer w) {
+    public void generateSignature(String Message, Integer s, Integer w) {
         Integer[]b = messagePlusCheckSum(Message, s, w);
         String Xi = "";
-        String ri = "";
-        int I = 0;
+
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
-            I = i % (w - 1);
             Xi = P_KeyPairGeneration.X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
-            ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
-            SIGNATURE += xor(calculateSignatureI(Xi, b[i]), ri, s);
+            SIGNATURE += calculateSignatureI(Xi, b[i], s);
         }
     }
 
-    private String calculateSignatureI(String Xi, Integer bi) {
+    private String calculateSignatureI(String Xi, Integer bi, Integer s) {
+        String ri = "";
         String sigi = Xi;
-        for (int i = 1; i <= bi; i++) {
-            sigi = md5B.md5Custom(sigi);
+        for (int i = 0; i < bi; i++) {
+            ri = P_KeyPairGeneration.r.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
+            sigi = md5B.md5Custom(xor(sigi, ri, s));
         }
         return sigi;
     }
