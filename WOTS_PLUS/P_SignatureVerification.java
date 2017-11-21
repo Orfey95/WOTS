@@ -11,13 +11,11 @@ public class P_SignatureVerification {
         Integer[]b = sigGen.messagePlusCheckSum(Message, s, w);
         //System.out.println(Arrays.asList(b));
         String SIGNATUREi = "";
-        String ri = "";
-        int I = 0;
+
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
-            I = (b[i]+1) % (w - 1);
+           // I = (b[i]+1) % (w - 1);
             SIGNATUREi = SIGNATURE.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
-            ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
-            sig += xor(calculateSignatureI(SIGNATUREi,b[i],w), ri, s);
+            sig += calculateSignatureI(SIGNATUREi,b[i],s,w);
         }
         sig = md5H.md5Custom(sig);
         if(P_KeyPairGeneration.Y.compareTo(sig) == 0)
@@ -25,9 +23,13 @@ public class P_SignatureVerification {
         else
             return false;
     }
-    private String calculateSignatureI(String sigi, Integer bi, Integer w) {
-        for (int i = 1; i <= w - 1 - bi; i++) {
-            sigi = md5B.md5Custom(sigi);
+    private String calculateSignatureI(String sigi, Integer bi, Integer s, Integer w) {
+        String ri = "";
+        int I = (bi+1);
+        if(I < (w-1))
+        for (int i = 0; i < w - 1 - bi; i++) {
+            ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
+            sigi = md5B.md5Custom(xor(sigi, ri, s));
         }
         return sigi;
     }
