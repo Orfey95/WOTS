@@ -12,7 +12,7 @@ public class P_KeyPairGeneration {
     public static String Y = "";
     public static String r = "";
 
-    public void calculateLengths(Integer s, Integer w){
+    private void calculateLengths(Integer s, Integer w){
         l1 = (int)Math.ceil(new Double(s) / (int)Math.ceil(bl.binlog((double) w)));
         l2 = (int)Math.ceil((new Double((int)Math.ceil(bl.binlog((double) (l1 * (w - 1))))) / new Double((int)Math.ceil(bl.binlog((double) w)))) + 1);
         l = l1 + l2;
@@ -35,21 +35,20 @@ public class P_KeyPairGeneration {
 
     public void calculatePK(Integer s, Integer w) {
         String Xi = "";
-        String Yi = "";
-        String ri = "";
-        int I = 0;
         for (int i = 0; i < l; i++) {
-            I = i % (w - 1);
             Xi = X.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
-            ri = r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
-            Y += xor(calculateYi(Xi, I, Yi, w), ri, s);
+            Y += calculateYi(Xi, s, w);
         }
+        Y = md5H.md5Custom(Y);
     }
 
-    private String calculateYi(String Xi, Integer I, String Yi, Integer w) {
+    private String calculateYi(String Xi, Integer s, Integer w) {
+        String Yi = "";
+        String ri = "";
         Yi = Xi;
-        for (int i = 1; i <= I - 1; i++) {
-            Yi = md5B.md5Custom(Yi);
+        for (int i = 0; i < w - 1; i++) {
+            ri = r.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
+            Yi = md5B.md5Custom(xor(Yi, ri, s));
         }
         return Yi;
     }
