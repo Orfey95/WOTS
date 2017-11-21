@@ -19,7 +19,7 @@ public class Main {
 
         Scanner inChoose = new Scanner(System.in);
         System.out.printf("Choose algoritm (1 - WOTS, 2 - WOTS+):\n");
-        int chooseAlgoritm = Integer.parseInt(inW.nextLine());
+        int chooseAlgoritm = Integer.parseInt(inChoose.nextLine());
 
         String Message = "";
         int s = 0;
