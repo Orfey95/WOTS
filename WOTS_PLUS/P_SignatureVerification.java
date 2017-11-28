@@ -13,7 +13,7 @@ public class P_SignatureVerification {
         String SIGNATUREi = "";
 
         for (int i = 0; i < P_KeyPairGeneration.l; i++) {
-           // I = (b[i]+1) % (w - 1);
+            // I = (b[i]+1) % (w - 1);
             SIGNATUREi = SIGNATURE.substring(i * s, i * s + s); // нахождение подстроки с длиной в s символ
             sig += calculateSignatureI(SIGNATUREi,b[i],s,w);
         }
@@ -25,11 +25,11 @@ public class P_SignatureVerification {
     }
     private String calculateSignatureI(String sigi, Integer bi, Integer s, Integer w) {
         String ri = "";
-        int I = (bi+1);
-        if(I < (w-1))
+        int I = bi;
         for (int i = 0; i < w - 1 - bi; i++) {
             ri = P_KeyPairGeneration.r.substring(I * s, I * s + s); // нахождение подстроки с длиной в s символ
             sigi = md5B.md5Custom(xor(sigi, ri, s));
+            I++;
         }
         return sigi;
     }
