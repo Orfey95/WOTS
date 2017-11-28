@@ -1,5 +1,4 @@
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Scanner;
 import Config.*;
 import WOTS_CR.*;
@@ -32,7 +31,6 @@ public class Main {
         if(chooseAlgoritm == 1) {
             KeyPairGeneration kpg = new KeyPairGeneration();
             SignatureGeneration sg = new SignatureGeneration();
-
             SignatureVerification sv = new SignatureVerification();
             long start = System.currentTimeMillis(); // STAR TIMER
             kpg.generatePairKey(s, w);
@@ -62,7 +60,7 @@ public class Main {
             }
         }
         if(chooseAlgoritm == 2) {
-        P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
+            P_KeyPairGeneration p_kpg = new P_KeyPairGeneration();
             P_SignatureGeneration p_sg = new P_SignatureGeneration();
             P_SignatureVerification p_sv = new P_SignatureVerification();
             long start = System.currentTimeMillis(); // STAR TIMER
@@ -72,8 +70,10 @@ public class Main {
             System.out.println("X: " + P_KeyPairGeneration.X);
             System.out.println("Y: " + P_KeyPairGeneration.Y);
             p_sg.generateSignature(Message, s, w);
-            p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w);
-            //System.out.println("l: " + String.valueOf(P_KeyPairGeneration.l));
+            boolean equalSignature = false;
+            if (p_sv.verifySignature(p_sg.SIGNATURE, Message, s, w)) {
+                equalSignature = true;
+            }
             long finish = System.currentTimeMillis(); // FINISH TIMER
             long timeConsumedMillis = finish - start;
             System.out.println("SIGNATURE: " + p_sg.SIGNATURE);
@@ -84,6 +84,11 @@ public class Main {
             System.out.println("Length of Signature: " + p_sg.SIGNATURE.length() + " bits");
             System.out.println("Time: " + timeConsumedMillis + "ms");
             //Statistic
+            if (equalSignature == true) {
+                System.out.println("\nThe signature is valid!");
+            } else {
+                System.out.println("The signature is NOT valid!");
+            }
         }
         Scanner inExit = new Scanner(System.in);
         System.out.printf("Exit or not? (0 - Exit, 1 - Start):\n");
