@@ -1,6 +1,5 @@
 package WOTS_PLUS;
 import Config.*;
-import java.util.Arrays;
 
 public class P_SignatureGeneration {
 
@@ -10,7 +9,7 @@ public class P_SignatureGeneration {
     public String CBinary = ""; // CheckSum binary
 
     public String messageAddZeros(String Message, Integer s, Integer w){
-        int temp = p_kp.l1 * (int)Math.ceil(bl.binlog((double) w)); // Проверка на кратность s к w
+        int temp = P_KeyPairGeneration.l1 * (int)Math.ceil(bl.binlog((double) w)); // Проверка на кратность s к w
         temp = temp - s;
         String tempS = ""; //Строка для добавочных нулей
         if(temp > 0){
@@ -26,12 +25,12 @@ public class P_SignatureGeneration {
         int CDecimal = 0;
 
         Message = messageAddZeros(Message, s, w);
-        Integer [] blocksOfMessage = new Integer[p_kp.l1];
+        Integer [] blocksOfMessage = new Integer[P_KeyPairGeneration.l1];
         int k = 0;  //счетчик для индексов массива
         for(int i = 0; i < Message.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = Message.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // нахождение подстроки с длиной в w символа
-            blocksOfMessage[k++] = (Integer.parseInt(S1, 2) % w); // присваивание подстроки к элементу массива
-            CDecimal += (w - 1 - (Integer.parseInt(S1, 2) % w)); // Подсчет CheckSum
+            blocksOfMessage[k++] = (Integer.parseInt(S1, 2) % 2); // присваивание подстроки к элементу массива
+            CDecimal += (w - 1 - (Integer.parseInt(S1, 2)) % 2); // Подсчет CheckSum
         }
         CBinary = Integer.toBinaryString(CDecimal); //Перевод CheckSum в 2-ю сс
         //System.out.println("CheckSum = " + CDecimal + "(10)");
@@ -59,7 +58,7 @@ public class P_SignatureGeneration {
         int k = 0;  //счетчик для индексов массива
         for(int i = 0; i < CBinary.length(); i = i + (int)Math.ceil(bl.binlog((double) w))) { // проход по массиву через каждые w символа для нахождения новой подстроки
             String S1 = CBinary.substring(i, i + (int)Math.ceil(bl.binlog((double) w))); // нахождение подстроки с длиной в w символа
-            blocksOfCheckSum[k++] = (Integer.parseInt(S1, 2) % w); // присваивание подстроки к элементу массива
+            blocksOfCheckSum[k++] = (Integer.parseInt(S1, 2) % 2); // присваивание подстроки к элементу массива
         }
         return blocksOfCheckSum;
     }
@@ -68,11 +67,11 @@ public class P_SignatureGeneration {
         Integer [] messageArray = messageSeparate(Message, s, w);
         Integer [] checkSumArray = checkSumSeparate(s, w);
         Integer [] fullArray = new Integer[P_KeyPairGeneration.l];
-        for(int i = 0; i < p_kp.l1; i++){
+        for(int i = 0; i < P_KeyPairGeneration.l1; i++){
             fullArray[i] = messageArray[i];
         }
         int k = 0;  //счетчик для индексов массива
-        for (int j = p_kp.l1; j < p_kp.l; j++) {
+        for (int j = P_KeyPairGeneration.l1; j < P_KeyPairGeneration.l; j++) {
             fullArray[j] = checkSumArray[k];
             k++;
         }
