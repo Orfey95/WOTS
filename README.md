@@ -1,1 +1,1 @@
-# WOTS
+Winternitz OTS (WOTS) and WOTS+
